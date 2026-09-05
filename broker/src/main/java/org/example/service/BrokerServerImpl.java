@@ -24,14 +24,10 @@ public class BrokerServerImpl implements BrokerServer {
     public BrokerServerImpl(int port){
         this.port = port;
         log.info("[BrokerServer | INFO]: Server will run on port {}", port);
-
-        this.start_con();
     }
 
     public BrokerServerImpl(){
         log.info("[BrokerServer | INFO]: Server will run on default port 8080");
-
-        this.start_con();
     }
 
     @Override
@@ -59,9 +55,9 @@ public class BrokerServerImpl implements BrokerServer {
         log.debug("[BrokerServer |  DEBUG]: Stoping connection...");
 
         try{
+            running = false;
             if(serverSocket != null) serverSocket.close();
             if(threadPool != null) threadPool.shutdown();
-            running = false;
         } catch (IOException e){
             log.error("[BrokerServer | ERROR]: Error at closing connection: {}", e.getMessage());
         }
