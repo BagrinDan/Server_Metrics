@@ -2,7 +2,7 @@
 
 ==================
 Planul laboratorului 1
-======================
+==================
 
 > **Tema:** Dezvoltarea unui sistem distribuit de colectare a telemetriei și a jurnalelor, bazat pe evenimente și pe modelul Publish/Subscribe.
 
