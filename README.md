@@ -42,3 +42,11 @@ Planul laboratorului 1
 
   * Loki — pentru jurnale
   * InfluxDB — pentru metrici
+
+## Publishers
+
+The publisher implementations are in `pub1` (Go CPU/RAM metrics) and `pub2`
+(Python structured logs). Both publish newline-delimited JSON over TCP to the
+broker. Each event has `topic`, `timestamp`, `publisher`, and `payload` fields.
+Set `BROKER_HOST`, `BROKER_PORT`, and `PUBLISH_INTERVAL_SECONDS` to configure
+the destination and sampling interval.
