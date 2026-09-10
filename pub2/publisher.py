@@ -52,7 +52,7 @@ def publish(host: str, port: int, event: dict) -> None:
 
 def main() -> None:
     host = os.getenv("BROKER_HOST", "127.0.0.1")
-    port = env_int("BROKER_PORT", 9000)
+    port = env_int("BROKER_PORT", 8080)
     interval = env_int("PUBLISH_INTERVAL_SECONDS", 5)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     logging.info("log publisher starting; broker=%s:%s interval=%ss", host, port, interval)
