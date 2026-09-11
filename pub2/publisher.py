@@ -45,9 +45,19 @@ def make_log_event() -> dict:
 
 
 def publish(host: str, port: int, event: dict) -> None:
-    encoded = (json.dumps(event, separators=(",", ":")) + "\n").encode("utf-8")
+    topic = event.get("topic", "logs")
+    json_payload = json.dumps(event, separators=(",", ":"))
+    
+    command = f"PUB:{topic}:{json_payload}\n"
+    encoded = command.encode("utf-8")
+    
     with socket.create_connection((host, port), timeout=3) as connection:
+        connection.recv(1024)
+        
         connection.sendall(encoded)
+        
+        # Need to log this shit, but not know
+        response = connection.recv(1024)
 
 
 def main() -> None:

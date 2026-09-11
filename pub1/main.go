@@ -83,7 +83,7 @@ func main() {
 
 func loadConfig() (config, error) {
 	host := envOr("BROKER_HOST", "127.0.0.1")
-	port := envOr("BROKER_PORT", "9000")
+	port := envOr("BROKER_PORT", "8080")
 	seconds, err := strconv.Atoi(envOr("PUBLISH_INTERVAL_SECONDS", "5"))
 	if err != nil || seconds <= 0 {
 		return config{}, fmt.Errorf("PUBLISH_INTERVAL_SECONDS must be a positive integer")
@@ -120,11 +120,20 @@ func publish(cfg config, message event) error {
 		return err
 	}
 	defer conn.Close()
+
+	payloadBytes, err := json.Marshal(message)
+	if err != nil {
+		return err
+	}
+
+	command := fmt.Sprintf("PUB:%s:%s\n", message.Topic, string(payloadBytes))
+
 	if err := conn.SetWriteDeadline(time.Now().Add(3 * time.Second)); err != nil {
 		return err
 	}
+
 	writer := bufio.NewWriter(conn)
-	if err := json.NewEncoder(writer).Encode(message); err != nil {
+	if _, err := writer.WriteString(command); err != nil {
 		return err
 	}
 	return writer.Flush()

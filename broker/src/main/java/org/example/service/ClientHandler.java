@@ -60,6 +60,7 @@ public class ClientHandler implements Runnable{
 
                 log.debug("[ClientHandler | Debug] Got client command: {}", line);
 
+                // TODO: Update SUB
                 if(line.startsWith("SUB:")){
                     String topic = line.substring(4).trim();
 
@@ -90,28 +91,29 @@ public class ClientHandler implements Runnable{
                         }
                     }
                 }
-                else if(line.startsWith("PUB:")){
+                else if (line.startsWith("PUB:")) {
                     String[] parts = line.substring(4).split(":", 2);
 
-                    if(parts.length == 2){
+                    if (parts.length == 2) {
                         String topic = parts[0].trim();
-                        String payload = parts[1].trim();
+                        String jsonPayload = parts[1].trim();
 
-                        try{
-                            MessageDTO dto = objectMapper.readValue(payload, MessageDTO.class);
-                            log.info("[ClientHandler | INFO]: Topic [{}], Sender: {}, Content: {}", topic, dto.topic(), dto.payload());
+                        try {
+                            // Универсальная проверка (SmartPipe)
+                            objectMapper.readTree(jsonPayload);
 
-                            String serializedPayload = objectMapper.writeValueAsString(dto);
-                            multicast(topic, serializedPayload);
+                            log.info("[ClientHandler | INFO]: Topic [{}], Payload: {}", topic, jsonPayload);
 
+                            multicast(topic, jsonPayload);
                             printWriter.println("PUBLISHED_OK");
-                        } catch (JsonProcessingException e){
-                            log.error("[ClientHandler | ERROR]: {}", e.getMessage());
+
+                        } catch (JsonProcessingException e) {
+                            log.error("[ClientHandler | ERROR] Invalid JSON format: {}", e.getMessage());
                             printWriter.println("ERROR: Invalid JSON structure");
                         }
 
-                    } else{
-                        printWriter.println("[ClientHandler | ERROR]: Invalid PUB format. Use PUB:topic:payload");
+                    } else {
+                        printWriter.println("ERROR: Invalid PUB format. Use PUB:topic:payload");
                     }
                 }
                 else {
