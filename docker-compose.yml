@@ -1,0 +1,14 @@
+services:
+  pub1:
+    build: ./pub1
+    container_name: pub1_service
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  pub2:
+    build: ./pub2
+    container_name: pub2_service
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
