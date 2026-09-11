@@ -23,7 +23,7 @@ public class BrokerServerImpl implements BrokerServer {
     private static final Logger log = LoggerFactory.getLogger(BrokerServerImpl.class);
     private int port = 8080; // Default port ofr most Java programs
 
-    private ConcurrentHashMap<String, Set<ClientHandler>> subscriptions = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Set<ClientHandler>> subscriptions = new ConcurrentHashMap<>();
     private ExecutorService threadPool;
     private ServerSocket serverSocket;
     private volatile boolean running = false;
@@ -41,6 +41,7 @@ public class BrokerServerImpl implements BrokerServer {
     public void start_con() {
         log.debug("[BrokerServer |  DEBUG]: Starting connection...");
         threadPool = Executors.newCachedThreadPool();
+
         try {
             serverSocket = new ServerSocket(this.port);
             running = true;

@@ -103,8 +103,11 @@ public class ClientHandler implements Runnable{
 
                             String serializedPayload = objectMapper.writeValueAsString(dto);
                             multicast(topic, serializedPayload);
+
+                            printWriter.println("PUBLISHED_OK");
                         } catch (JsonProcessingException e){
                             log.error("[ClientHandler | ERROR]: {}", e.getMessage());
+                            printWriter.println("ERROR: Invalid JSON structure");
                         }
 
                     } else{
