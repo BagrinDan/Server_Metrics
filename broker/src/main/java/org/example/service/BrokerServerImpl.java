@@ -12,12 +12,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+/*
+*  Daemon Broker Server.
+*  Open's socket and listening for connections
+*/
+
+
 public class BrokerServerImpl implements BrokerServer {
     private static final Logger log = LoggerFactory.getLogger(BrokerServerImpl.class);
-    private int port = 8080;
+    private int port = 8080; // Default port ofr most Java programs
 
-    private ConcurrentHashMap<String, Set<ClientHandler>> subscriptions = new ConcurrentHashMap<>(); // ???
-    private ExecutorService threadPool; // ???
+    private ConcurrentHashMap<String, Set<ClientHandler>> subscriptions = new ConcurrentHashMap<>();
+    private ExecutorService threadPool;
     private ServerSocket serverSocket;
     private volatile boolean running = false;
 
@@ -33,7 +40,7 @@ public class BrokerServerImpl implements BrokerServer {
     @Override
     public void start_con() {
         log.debug("[BrokerServer |  DEBUG]: Starting connection...");
-        threadPool = Executors.newCachedThreadPool(); // ???
+        threadPool = Executors.newCachedThreadPool();
         try {
             serverSocket = new ServerSocket(this.port);
             running = true;
@@ -63,9 +70,5 @@ public class BrokerServerImpl implements BrokerServer {
         }
 
         log.debug("[BrokerServer |  DEBUG]: Connection is terminated");
-    }
-
-    public ConcurrentHashMap<String, Set<ClientHandler>> getSubscriptions() {
-        return subscriptions;
     }
 }

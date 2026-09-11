@@ -18,7 +18,6 @@ public class BrokerServerImplTest {
     private static final Logger log = LoggerFactory.getLogger(BrokerServerImplTest.class);
 
     private BrokerServerImpl brokerServer;
-    private Thread serverThread;
     private final int testPort = 8090;
     private final String testIp = "127.0.0.1";
 
@@ -26,7 +25,7 @@ public class BrokerServerImplTest {
     public void setup(){
         brokerServer = new BrokerServerImpl(testPort);
 
-        serverThread = new Thread(() -> brokerServer.start_con());
+        Thread serverThread = new Thread(() -> brokerServer.start_con());
         serverThread.start();
 
         try{
