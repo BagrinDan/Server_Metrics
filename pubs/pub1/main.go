@@ -96,15 +96,18 @@ func collectMetrics() (metrics, error) {
 	if err != nil {
 		return metrics{}, err
 	}
+
 	cpuPercent := first(values)
 	memory, err := mem.VirtualMemory()
 	if err != nil {
 		return metrics{}, err
 	}
+
 	hostName, err := host.Info()
 	if err != nil {
 		return metrics{}, err
 	}
+	
 	return metrics{
 		CPUPercent:    cpuPercent,
 		MemoryUsed:    memory.Used,
