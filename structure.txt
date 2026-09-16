@@ -1,0 +1,20 @@
+LAB1/
+├── pubs/                  # → сервер, docker-compose
+│   ├── pub1/
+│   ├── pub2/
+│   └── docker-compose.yml
+│
+├── infra/                 # → ноут, docker-compose (broker+БД+Grafana)
+│   ├── broker/
+│   ├── grafana/           # datasources.yml, dashboards и т.п.
+│   └── docker-compose.yml
+│
+├── subs/                  # → k3s
+│   ├── sub1/
+│   ├── sub2/
+│   └── k8s/               # или helm/
+│       ├── sub1-deployment.yaml
+│       └── sub2-deployment.yaml
+│
+├── .gitignore
+├── README.md

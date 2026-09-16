@@ -1,0 +1,28 @@
+services:
+  pub1:
+    build: ./pub1
+    container_name: pub1_service
+    ports:
+      - "7000:7000"
+    restart: unless-stopped
+    networks:
+      - lab1-shared
+    environment:
+      - BROKER_HOST=${BROKER_HOST}
+
+  pub2:
+    build: ./pub2
+    container_name: pub2_service
+    ports:
+      - "7010:7010"
+    restart: unless-stopped
+    networks:
+      - lab1-shared
+    environment:
+      - BROKER_HOST=${BROKER_HOST}
+
+
+networks:
+  lab1-shared:
+    external: true
+    name: infra_infra-net
