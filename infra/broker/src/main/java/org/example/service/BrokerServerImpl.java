@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Set;
@@ -43,7 +44,7 @@ public class BrokerServerImpl implements BrokerServer {
         threadPool = Executors.newCachedThreadPool();
 
         try {
-            serverSocket = new ServerSocket(this.port);
+            serverSocket = new ServerSocket(this.port, 50);
             running = true;
             log.info("[BrokerServer | INFO]: Connection established on port: {}", port);
 

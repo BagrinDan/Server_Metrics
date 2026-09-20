@@ -81,15 +81,20 @@ func main() {
 	}
 }
 
+
 func loadConfig() (config, error) {
-	host := envOr("BROKER_HOST", "127.0.0.1")
-	port := envOr("BROKER_PORT", "8080")
-	seconds, err := strconv.Atoi(envOr("PUBLISH_INTERVAL_SECONDS", "5"))
+	host := envOr("BROKER_HOST", "CANT_READ_FLICKING_ENV")
+	port := envOr("BROKER_PORT", "CANT_READ_FLICKING_ENV")
+	
+	log.Printf("Broker %s", host)
+
+	seconds, err := strconv.Atoi("5")
 	if err != nil || seconds <= 0 {
 		return config{}, fmt.Errorf("PUBLISH_INTERVAL_SECONDS must be a positive integer")
 	}
 	return config{BrokerHost: host, BrokerPort: port, Interval: time.Duration(seconds) * time.Second}, nil
 }
+
 
 func collectMetrics() (metrics, error) {
 	values, err := cpu.Percent(time.Second, false)

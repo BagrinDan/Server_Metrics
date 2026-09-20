@@ -11,13 +11,13 @@ services:
     image: influxdb:2.7
     container_name: influxdb
     ports:
-      - "8090:8090"
+      - "8090:8086"
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=admin
-      - DOCKER_INFLUXDB_INIT_ORG=lab1
-      - DOCKER_INFLUXDB_INIT_BUCKET=metrics
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}
     volumes:
       - influxdb-data:/var/lib/influxdb2
     networks:
@@ -39,7 +39,9 @@ services:
     image: grafana/grafana:11.0.0
     container_name: grafana
     ports:
-      - "9000:9000"
+      - "9000:3000"
+    environment:
+      - GF_INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
       - grafana-data:/var/lib/grafana

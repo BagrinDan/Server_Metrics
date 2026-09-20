@@ -9,25 +9,37 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"os"
+	"encoding/json"
 )
 
 func sendToLoki(jsonPayload string) {
-	url := "http://localhost:8091/loki/api/v1/push"
+	lokiURL := envOr("LOKI_URL", "CANT READ ENV")
+	url := fmt.Sprintf("%s/loki/api/v1/push", lokiURL)
+	log.Printf("Sub2 uses: %s", url)
+
 	timestamp := fmt.Sprintf("%d", time.Now().UnixNano())
 
+	// экранируем jsonPayload, чтобы вставить его как валидную JSON-строку
+	escapedPayload, err := json.Marshal(jsonPayload)
+	if err != nil {
+		log.Printf("Ошибка экранирования payload: %v\n", err)
+		return
+	}
+
 	payload := fmt.Sprintf(`{
-		"streams": [
-			{
-				"stream": {
-					"job": "server_metrics_logs",
-					"source": "sub2"
-				},
-				"values": [
-					["%s", "%s"]
-				]
-			}
-		]
-	}`, timestamp, jsonPayload)
+        "streams": [
+            {
+                "stream": {
+                    "job": "server_metrics_logs",
+                    "source": "sub2"
+                },
+                "values": [
+                    ["%s", %s]
+                ]
+            }
+        ]
+    }`, timestamp, escapedPayload)
 
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer([]byte(payload)))
 	if err != nil {
@@ -45,8 +57,14 @@ func main() {
 	var conn net.Conn
 	var err error
 
+	host := envOr("BROKER_HOST", "CANT_READ_FLICKING_ENV")
+	port := envOr("BROKER_PORT", "CANT_READ_FLICKING_ENV")
+
+	log.Printf("Sub1 is trying to knock-knock to: %s %s",host, port)
+
 	for {
-		conn, err = net.Dial("tcp", "localhost:8080")
+		conn, err = net.Dial("tcp", host+":"+port)
+
 		if err == nil {
 			break
 		}
@@ -96,4 +114,12 @@ func main() {
 			fmt.Println("Системное сообщение:", message)
 		}
 	}
+}
+
+
+func envOr(name, fallback string) string {
+	if value := os.Getenv(name); value != "" {
+		return value
+	}
+	return fallback
 }

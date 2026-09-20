@@ -7,8 +7,8 @@ services:
     restart: unless-stopped
     networks:
       - lab1-shared
-    environment:
-      - BROKER_HOST=${BROKER_HOST}
+    env_file:
+      - .env
 
   pub2:
     build: ./pub2
@@ -18,8 +18,8 @@ services:
     restart: unless-stopped
     networks:
       - lab1-shared
-    environment:
-      - BROKER_HOST=${BROKER_HOST}
+    env_file:
+      - .env
 
 
 networks:
