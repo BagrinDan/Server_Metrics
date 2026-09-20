@@ -22,6 +22,7 @@ import static org.example.entity.enums.EventTypeEnum.NEW_SUBSCRIPTION;
 *  Данный класс работает с клиентами: pub / sub
 *  Отвечает за получения сообщении, за отправку и десериализацию (JSON)
 */
+
 public class ClientHandler implements Runnable{
     private static final Logger log = LoggerFactory.getLogger(ClientHandler.class);
 
@@ -99,7 +100,6 @@ public class ClientHandler implements Runnable{
                         String jsonPayload = parts[1].trim();
 
                         try {
-                            // Универсальная проверка (SmartPipe)
                             objectMapper.readTree(jsonPayload);
 
                             log.info("[ClientHandler | INFO]: Topic [{}], Payload: {}", topic, jsonPayload);

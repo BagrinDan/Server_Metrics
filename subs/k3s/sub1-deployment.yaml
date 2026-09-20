@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sub1
+  labels:
+    app: sub1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sub1
+  template:
+    metadata:
+      labels:
+        app: sub1
+    spec:
+      containers:
+        - name: sub1
+          image: sub1:local
+          imagePullPolicy: Never
+          env:
+            - name: BROKER_HOST
+              value: "100.78.244.40"
+            - name: BROKER_PORT
+              value: "8080"
+            - name: INFLUXDB_URL
+              value: "http://100.78.244.40:8090"
+            - name: INFLUXDB_ORG
+              value: "lab1"
+            - name: INFLUXDB_BUCKET
+              value: "metrics"
+            - name: INFLUXDB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: influxdb-secret
+                  key: token
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"

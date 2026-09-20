@@ -30,3 +30,8 @@ __pycache__/
 # Go build output
 pub1/pub1
 pub1/pub1.exe
+
+subs/k3s/influxdb-secret.yaml
+
+infra/.env
+pubs/.env
