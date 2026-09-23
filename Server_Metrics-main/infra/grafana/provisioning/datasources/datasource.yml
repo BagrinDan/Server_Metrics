@@ -1,0 +1,23 @@
+apiVersion: 1
+
+datasources:
+  - name: Loki
+    uid: loki-main
+    type: loki
+    access: proxy
+    url: http://loki:8091
+    isDefault: false
+
+  - name: InfluxDB
+    uid: influxdb-main
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    jsonData:
+      version: Flux
+      organization: lab1
+      defaultBucket: metrics
+      httpMode: POST
+    secureJsonData:
+      token: "$__env{GF_INFLUXDB_TOKEN}"
+    isDefault: true

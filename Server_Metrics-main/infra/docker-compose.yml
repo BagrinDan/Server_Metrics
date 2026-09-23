@@ -1,0 +1,61 @@
+services:
+  broker:
+    build: ./broker
+    container_name: broker
+    ports:
+      - "8080:8080"
+    networks:
+      - infra-net
+
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    ports:
+      - "8090:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUXDB_USERNAME}
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUXDB_PASSWORD}
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUXDB_ORG}
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUXDB_BUCKET}
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    networks:
+      - infra-net
+
+  loki:
+    image: grafana/loki:2.9.0
+    container_name: loki
+    ports:
+      - "8091:8091"
+    volumes:
+      - ./loki/loki-config.yaml:/etc/loki/local-config.yaml
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - infra-net
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: grafana
+    ports:
+      - "9000:3000"
+    environment:
+      - GF_INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - influxdb
+      - loki
+    networks:
+      - infra-net
+
+volumes:
+  influxdb-data:
+  loki-data:
+  grafana-data:
+
+networks:
+  infra-net:
+    driver: bridge

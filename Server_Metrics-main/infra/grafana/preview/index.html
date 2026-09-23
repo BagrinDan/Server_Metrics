@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Server Metrics // Nightwatch</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div>
+        <div class="eyebrow">SYSTEM / TELEMETRY</div>
+        <h1>Live infrastructure signal <span>·</span> <b>5s refresh</b></h1>
+        <p><i class="status-dot"></i> All systems are being observed in real time</p>
+      </div>
+      <div class="clock">NIGHTWATCH <strong>● ONLINE</strong></div>
+    </header>
+
+    <section class="stats-grid" aria-label="Current server status">
+      <article class="stat-card cyan">
+        <div class="card-label">CPU LOAD <span>↗</span></div>
+        <div class="stat-value">38<span>%</span></div>
+        <div class="meter"><span style="width: 38%"></span></div>
+        <small>Current CPU utilization</small>
+      </article>
+      <article class="stat-card violet">
+        <div class="card-label">MEMORY PRESSURE <span>↗</span></div>
+        <div class="stat-value">64<span>%</span></div>
+        <div class="meter"><span style="width: 64%"></span></div>
+        <small>Current memory utilization</small>
+      </article>
+      <article class="stat-card blue">
+        <div class="card-label">MEMORY USED <span>↗</span></div>
+        <div class="stat-value">5.2<span> GB</span></div>
+        <div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <small>Memory currently in use</small>
+      </article>
+      <article class="stat-card cyan">
+        <div class="card-label">REPORTING HOSTS <span>↗</span></div>
+        <div class="stat-value">01</div>
+        <div class="host"><i class="status-dot"></i> telemetry-node-01</div>
+        <small>Reporting in selected range</small>
+      </article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel resource-panel">
+        <div class="panel-heading"><div><span class="signal cyan-bg"></span><h2>RESOURCE PULSE</h2><p>CPU and memory utilization</p></div><span class="range">LAST 30 MIN</span></div>
+        <div class="chart-wrap">
+          <div class="y-axis"><span>100%</span><span>75%</span><span>50%</span><span>25%</span><span>0%</span></div>
+          <svg class="chart" viewBox="0 0 760 250" preserveAspectRatio="none" role="img" aria-label="CPU and memory line chart">
+            <defs><linearGradient id="cpu-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#62f6d5" stop-opacity=".25"/><stop offset="1" stop-color="#62f6d5" stop-opacity="0"/></linearGradient><linearGradient id="mem-fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#b69cff" stop-opacity=".2"/><stop offset="1" stop-color="#b69cff" stop-opacity="0"/></linearGradient></defs>
+            <g class="grid-lines"><path d="M0 10H760M0 70H760M0 130H760M0 190H760M0 250H760"/></g>
+            <path class="area cpu-area" d="M0 170 L55 155 L110 160 L165 135 L220 148 L275 115 L330 122 L385 96 L440 114 L495 84 L550 100 L605 76 L660 88 L710 60 L760 75 V250 H0Z"/>
+            <path class="area mem-area" d="M0 105 L55 110 L110 98 L165 104 L220 92 L275 100 L330 80 L385 88 L440 75 L495 82 L550 68 L605 74 L660 60 L710 68 L760 54 V250 H0Z"/>
+            <path class="line cpu-line" d="M0 170 L55 155 L110 160 L165 135 L220 148 L275 115 L330 122 L385 96 L440 114 L495 84 L550 100 L605 76 L660 88 L710 60 L760 75"/>
+            <path class="line mem-line" d="M0 105 L55 110 L110 98 L165 104 L220 92 L275 100 L330 80 L385 88 L440 75 L495 82 L550 68 L605 74 L660 60 L710 68 L760 54"/>
+          </svg>
+        </div>
+        <div class="legend"><span><i class="legend-dot cyan-bg"></i> CPU <b>38%</b></span><span><i class="legend-dot violet-bg"></i> MEMORY <b>64%</b></span><span class="legend-max">MAX 71%</span></div>
+      </article>
+
+      <article class="panel memory-panel">
+        <div class="panel-heading"><div><span class="signal blue-bg"></span><h2>MEMORY FOOTPRINT</h2><p>Used and available memory</p></div><span class="range">LIVE</span></div>
+        <div class="memory-chart">
+          <div class="donut"><div><strong>64%</strong><small>USED</small></div></div>
+          <div class="memory-legend"><span><i class="legend-dot blue-bg"></i> USED <b>5.2 GB</b></span><span><i class="legend-dot slate-bg"></i> TOTAL <b>8.1 GB</b></span><span><i class="legend-dot violet-bg"></i> FREE <b>2.9 GB</b></span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel event-panel">
+      <div class="panel-heading"><div><span class="signal pink-bg"></span><h2>EVENT STREAM</h2><p>Latest events received by Loki</p></div><span class="live-pill"><i class="status-dot"></i> LIVE</span></div>
+      <div class="events">
+        <div class="event"><time>12:54:18</time><span class="tag info">INFO</span><span>worker heartbeat received</span><em>telemetry-worker</em></div>
+        <div class="event"><time>12:54:13</time><span class="tag warning">WARN</span><span>worker response exceeded expected latency</span><em>telemetry-worker</em></div>
+        <div class="event"><time>12:54:08</time><span class="tag info">INFO</span><span>worker heartbeat received</span><em>telemetry-worker</em></div>
+        <div class="event"><time>12:54:03</time><span class="tag error">ERROR</span><span>worker failed to process event</span><em>telemetry-worker</em></div>
+      </div>
+    </section>
+    <footer><span>SERVER METRICS // NIGHTWATCH</span><span>INFLUXDB <i class="status-dot"></i> &nbsp; LOKI <i class="status-dot"></i></span></footer>
+  </main>
+</body>
+</html>
